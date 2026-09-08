@@ -35,7 +35,7 @@
     <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
         <h2 style="color: blue;">Gestion des produits</h2>
         <?php
-            $products = fetchAll($bdd, "SELECT * FROM products ORDER BY id ASC");
+            $products = fetchAll($bdd, "SELECT products.*, categories.name AS category_name FROM products JOIN categories ON products.id_category = categories.id ORDER BY products.id ASC");
         ?>
         <a href="addProduct.php" class="btn btn-primary my-3">Ajouter un produit</a>
 
@@ -44,6 +44,7 @@
                 <thead>
                     <tr>
                         <th scope="col"># Id</th>
+                        <th scope="col">Image</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Catégorie</th>
                         <th scope="col">Prix</th>
@@ -54,8 +55,25 @@
                     <?php foreach ($products as $product) : ?>
                         <tr>
                             <th scope="row"><?= $product['id'] ?></th>
+                            <?php
+                                $coverPath = "../images/" . ($product['cover'] ?? '');
+                                $hasImage = !empty($product['cover']) && file_exists($coverPath);
+                            ?>
+                            <td>
+                                <?php if ($hasImage) : ?>
+                                    <img src="<?= htmlspecialchars($coverPath) ?>" 
+                                        alt="<?= htmlspecialchars($product['name']) ?>" 
+                                        class="rounded" 
+                                        style="width: 60px; height: 60px; object-fit: cover;">
+                                <?php else : ?>
+                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" 
+                                        style="width: 60px; height: 60px;">
+                                        <i class="bi bi-image text-white"></i>
+                                    </div>
+                                <?php endif; ?>
+                            </td>
                             <td><?= htmlspecialchars($product['name']) ?></td>
-                            <td><?= htmlspecialchars($product['id_category']) ?></td>
+                            <td><?= htmlspecialchars($product['category_name']) ?></td>
                             <td><?= $product['price'] ?>€</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">

@@ -48,27 +48,26 @@
         $err = 5;
     }
 
-    if($err===0){
-        
-        if(!isset($_FILES['cover']) || $_FILES['cover']['error'] !== UPLOAD_ERR_OK){
+if($err===0){
+
+    $coverToSave = $product['cover']; // garde l'image existante par défaut
+
+    // Traiter l'upload SEULEMENT si un nouveau fichier a été envoyé
+    if(isset($_FILES['cover']) && $_FILES['cover']['error'] !== UPLOAD_ERR_NO_FILE){
+
+        if($_FILES['cover']['error'] !== UPLOAD_ERR_OK){
             header("Location: updateProduct.php?id=".$product['id']."&error=6");
             exit();
         }
 
-        // récup le fichier
         $tmpPath = $_FILES['cover']['tmp_name'];
-        $tailleMax = 2 * 1024 * 1024; 
-     
-        // vérification de taille
-        if($_FILES['cover']['size'] > $tailleMax)
-        {
+        $tailleMax = 2 * 1024 * 1024;
+
+        if($_FILES['cover']['size'] > $tailleMax){
             header("Location: updateProduct.php?id=".$product['id']."&error=7");
             exit();
         }
 
-        // extension
-        // image.php.jpg
-        // image.JPG
         $extension = strtolower(pathinfo($_FILES['cover']['name'], PATHINFO_EXTENSION));
         $extensionAutorisees = ['jpg','jpeg','png','svg',"webp"];
 
@@ -77,7 +76,6 @@
             exit();
         }
 
-        // vérification du Mime Type => utilisation contenu binaire(fileinfo)
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mimeReel = $finfo->file($tmpPath);
 
@@ -90,70 +88,55 @@
         ];
 
         if(!in_array($mimeReel, $mimesAutorises, true) || $mimesAutorises[$extension] !== $mimeReel){
-            header("Location:  updateProduct.php?id=".$product['id']."&error=9");
+            header("Location: updateProduct.php?id=".$product['id']."&error=9");
             exit();
         }
 
-        // gestion du nom du fichier
-        // dossier/ico/fichier.jpg
-        // fichier.jpg
-        $nomImage =  basename($_FILES['cover']['name']);
+        $nomImage = basename($_FILES['cover']['name']);
         $nomImageLisible = strtr($nomImage, 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ','AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
         $nomImageSafe = preg_replace('/([^.a-z0-9]+)/i', '-', $nomImageLisible);
         $uniqnomSafe = uniqid().'-'.$nomImageSafe;
 
-
-        // $uniqnomSafe = bin2hex(random_bytes(16)).'.'.$extension;
-
-        // dfkqsjfkldfj-fichier.jpg
-        // imagesdfkqsjfkldfj-fichier.jpg
         $dossierDestination = "../images/";
-        
-        if(move_uploaded_file($tmpPath, $dossierDestination.$uniqnomSafe)){
-            // gestion de la modification 
-            //
-            //
-            try {
-                // 1. Syntaxe SQL UPDATE correcte avec clause WHERE
-                $sql = "UPDATE products SET name = :name, description = :description, price = :price, id_category = :categorie, cover = :cover WHERE id = :id";
 
-                // 2. Appel de la fonction execute() définie dans functions.php
-                execute($bdd, $sql, [
-                    "name"        => $name,
-                    "description" => $description,
-                    "price"       => $price,
-                    "categorie"   => $categorie,
-                    "cover"       => $uniqnomSafe,
-                    "id"          => $product['id']
-                ]);
-
-                // 3. Suppression de l'ancienne image du serveur pour éviter l'encombrement (facultatif)
-                if (!empty($product['cover']) && file_exists($dossierDestination . $product['cover'])) {
-                    unlink($dossierDestination . $product['cover']);
-                }
-
-                // 4. Invalidation du token CSRF et redirection de succès
-                unset($_SESSION['csrf_token']);
-                header("Location: products.php?update=success");
-                exit();
-
-            } catch(PDOException $e) {
-                // En cas d'erreur SQL, suppression de la nouvelle image téléversée
-                if (file_exists($dossierDestination . $uniqnomSafe)) {
-                    unlink($dossierDestination . $uniqnomSafe);
-                }
-                header("Location: products.php?error=500");
-                exit();
-            }
-
-        }else{
+        if(!move_uploaded_file($tmpPath, $dossierDestination.$uniqnomSafe)){
             header("Location: updateProduct.php?id=".$product['id']."&error=10");
             exit();
         }
 
-     
+        $coverToSave = $uniqnomSafe;
+    }
 
-    }else{
-        header("Location: addProduct.php?error=".$err);
+    try {
+        $sql = "UPDATE products SET name = :name, description = :description, price = :price, id_category = :categorie, cover = :cover WHERE id = :id";
+
+        execute($bdd, $sql, [
+            "name"        => $name,
+            "description" => $description,
+            "price"       => $price,
+            "categorie"   => $categorie,
+            "cover"       => $coverToSave,
+            "id"          => $product['id']
+        ]);
+
+        // Supprimer l'ancienne image seulement si elle a été remplacée
+        if ($coverToSave !== $product['cover'] && !empty($product['cover']) && file_exists("../images/" . $product['cover'])) {
+            unlink("../images/" . $product['cover']);
+        }
+
+        unset($_SESSION['csrf_token']);
+        header("Location: products.php?update=success");
+        exit();
+
+    } catch(PDOException $e) {
+        if ($coverToSave !== $product['cover'] && file_exists("../images/" . $coverToSave)) {
+            unlink("../images/" . $coverToSave);
+        }
+        header("Location: products.php?error=500");
         exit();
     }
+
+}else{
+    header("Location: updateProduct.php?id=".$product['id']."&error=".$err);
+    exit();
+}

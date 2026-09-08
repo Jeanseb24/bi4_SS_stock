@@ -6,6 +6,11 @@
         exit();
     }
 
+    require "../config/connexion.php";
+    require "functions.php";
+
+    $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
+
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +25,17 @@
                 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             ?>
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-            <div class="form-group">
+            <div class="form-group my-2">
+                <label for="categorie">Catégorie: </label>
+                <select name="categorie" id="categorie" class="form-control">
+                    <?php foreach ($categories as $category) : ?>
+                        <option value="<?= htmlspecialchars($category['id']) ?>">
+                            <?= htmlspecialchars($category['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group my-2">
                <label for="nom">Nom: </label>
                <input type="text" name="name" id="nom" class="form-control">
             </div>
@@ -31,12 +46,6 @@
             <div class="form-group my-2">
                 <label for="price">Prix: </label>
                 <input type="number" name="price" id="price" step="0.01" class="form-control">
-            </div>
-            <div class="form-group my-2">
-                <label for="categorie">Catégorie: </label>
-                <select name="categorie" id="categorie" class="form-control">
-                    <option value="1">Catégorie 1</option>
-                </select>
             </div>
             <div class="form-group my-2">
                 <label for="cover">Image de couverture: </label>

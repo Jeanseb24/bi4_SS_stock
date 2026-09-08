@@ -14,11 +14,14 @@
     require "../config/connexion.php";
     require "functions.php";
 
+    $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
+
     $product = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['id']]);
     if(!$product){
         header("Location: ../404.php");
         exit();
     }
+
 
 ?>
 
@@ -28,34 +31,39 @@
 <body>
     <?php include("partials/nav.php"); ?>
     <div class="container">
-        <h2>Modifier produit: <?= $product['name'] ?></h2>
+        <h2>Modifier produit: <?= htmlspecialchars($product['name']) ?></h2>
         <form action="treatmentUpdateProduct.php?id=<?= $product['id'] ?>" method="POST" enctype="multipart/form-data">
             <?php 
                 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             ?>
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-            <div class="form-group">
+            <div class="form-group my-2">
+                <label for="categorie">Catégorie: </label>
+                <select name="categorie" id="categorie" class="form-control">
+                    <?php foreach ($categories as $category) : ?>
+                        <option value="<?= htmlspecialchars($category['id']) ?>"
+                        <?= ($category['id'] == $product['id_category']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($category['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group my-2">
                <label for="nom">Nom: </label>
-               <input type="text" name="name" id="nom" class="form-control" value="<?= $product['name'] ?>">
+               <input type="text" name="name" id="nom" class="form-control" value="<?= htmlspecialchars($product['name']) ?>">
             </div>
             <div class="form-group my-2">
                 <label for="description">Déscription: </label>
-                <textarea name="description" id="description" class="form-control"><?= $product['description'] ?></textarea>
+                <textarea name="description" id="description" class="form-control"><?= htmlspecialchars($product['description']) ?></textarea>
             </div>
             <div class="form-group my-2">
                 <label for="price">Prix: </label>
                 <input type="number" name="price" id="price" step="0.01" class="form-control" value="<?= $product['price'] ?>">
             </div>
             <div class="form-group my-2">
-                <label for="categorie">Catégorie: </label>
-                <select name="categorie" id="categorie" class="form-control">
-                    <option value="1">Catégorie 1</option>
-                </select>
-            </div>
-            <div class="form-group my-2">
                 <label for="cover">Image de couverture: </label>
                 <div class="col-4">
-                    <img src="../images/<?= $product['cover'] ?>" alt="image de <?= $product['name'] ?>" class="img-fluid">
+                    <img src="../images/<?= $product['cover'] ?>" alt="image de <?= htmlspecialchars($product['name']) ?>" class="img-fluid">
                 </div>
                 <input type="file" name="cover" id="cover" class="form-control">
             </div>
