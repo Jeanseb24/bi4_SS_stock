@@ -33,12 +33,44 @@
 <body>
     <?php include("partials/nav.php"); ?>
     <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
-        <h2 style="color: blue;">Gestion des produits</h2>
+        <h2>Gestion des produits</h2>
         <?php
-            $products = fetchAll($bdd, "SELECT products.*, categories.name AS category_name FROM products JOIN categories ON products.id_category = categories.id ORDER BY products.id ASC");
-        ?>
-        <a href="addProduct.php" class="btn btn-primary my-3">Ajouter un produit</a>
+            $selectedCategory = $_GET['category'] ?? '';
 
+            if (!empty($selectedCategory) && filter_var($selectedCategory, FILTER_VALIDATE_INT)) {
+                $products = fetchAll($bdd, "
+                    SELECT products.*, categories.name AS category_name 
+                    FROM products 
+                    JOIN categories ON products.id_category = categories.id 
+                    WHERE products.id_category = ?
+                    ORDER BY products.id ASC
+                ", [$selectedCategory]);
+            } else {
+                $products = fetchAll($bdd, "
+                    SELECT products.*, categories.name AS category_name 
+                    FROM products 
+                    JOIN categories ON products.id_category = categories.id 
+                    ORDER BY products.id ASC
+                ");
+            }
+            $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
+        ?>
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="addProduct.php" class="btn btn-outline-primary my-3">Ajouter un produit</a>
+
+            <form method="GET" action="products.php" class="d-flex align-items-center gap-2">
+                <label for="category" class="mb-0">Catégorie :</label>
+                <select name="category" id="category" class="form-select" style="width: auto;" onchange="this.form.submit()">
+                    <option value="">Toutes les catégories</option>
+                    <?php foreach ($categories as $category) : ?>
+                        <option value="<?= htmlspecialchars($category['id']) ?>"
+                            <?= ($selectedCategory == $category['id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($category['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </form>
+        </div>
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle text-center w-100 border">
                 <thead>

@@ -29,11 +29,11 @@
 <body>
     <?php include("partials/nav.php"); ?>
     <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
-        <h2 style="color: blue;">Gestion des catégories</h2>
+        <h2>Gestion des catégories</h2>
         <?php
             $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY id ASC");
         ?>
-        <a href="addCategory.php" class="btn btn-primary my-3">Ajouter une catégorie</a>
+        <a href="addCategory.php" class="btn btn-outline-primary my-3">Ajouter une catégorie</a>
 
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle text-center w-100 border">
