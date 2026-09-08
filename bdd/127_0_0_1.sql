@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 08 sep. 2026 à 21:35
+-- Généré le : mar. 08 sep. 2026 à 21:39
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -80,11 +80,11 @@ CREATE TABLE IF NOT EXISTS `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `id_category`, `cover`) VALUES
-(2, 'produit2', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 22.00, 1, '6aa0465805092-pexels-martijnadegeest-633565.jpg'),
+(2, 'produit2', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).', 22.00, 1, '6aa0808a7689a-images.jpg'),
 (3, 'produit3', 'It is a long established fact that a reader will b...', 32.00, 4, '6aa0461ea98a1-81RCr4N-RyL.jpg'),
 (9, 'test9', 'test', 125.00, 5, '6aa02bd680612-6a9eb1394d5cf-images.jpg'),
-(10, 'Test Cat2', 'Test cat2', 15.00, 5, '6aa069a9e3a6d-o-3b0063b653ac86dd31f5ebd718194716-bmw-2-f22-f23-tail-light-part.jpg'),
-(11, 'Test Cat4', 'Catégorie 4 en test', 150.00, 6, '6aa069ec19573-u9h8bsny6mv9tft01zqtrxfjj41gxo28.jpg'),
+(10, 'Test Cat2', 'Test cat2', 15.00, 5, '6aa0805c33573-images.jpg'),
+(11, 'Test Cat4', 'Catégorie 4 en test', 150.00, 6, '6aa08071eca11-images.jpg'),
 (12, 'PC Portable Ultra 15', 'Ordinateur portable 15 pouces avec processeur i7 et 16 Go de RAM.', 899.99, 7, '6aa070b32642a-images.jpeg'),
 (13, 'Clavier Mécanique RGB', 'Clavier gamer avec interrupteurs tactiles et rétroéclairage personnalisable.', 79.50, 7, '6aa070d6695bc-images.jpeg'),
 (14, 'Souris Sans Fil Ergonomique', 'Souris sans fil rechargeable adaptée au travail prolongé.', 39.90, 7, '6aa070efc1fc0-images.jpeg'),
@@ -96,7 +96,7 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `id_category`, `co
 (20, 'Enceinte Portable Waterproof', 'Enceinte sans fil résistante à l\'eau IPX7 avec basses renforcées.', 59.95, 9, '6aa071da60f9d-images.jpeg'),
 (21, 'Écouteurs Sans Fil True Wireless', 'Écouteurs intra-auriculaires avec boîtier de charge compact et réduction de bruit.', 89.00, 9, '6aa071f4e2473-images.jpeg'),
 (22, 'Manette Sans Fil Pro', 'Manette ergonomique compatible PC et consoles de salon.', 54.90, 10, '6aa0721177e5f-61MalolTdXL.jpg'),
-(23, 'Casque Gamer avec Micro', 'Micro-casque audio surround avec coussinets à mémoire de forme.', 69.00, 10, '6aa0722b0a146-micro-casque-lumineux-usb-special-gaming-ghs-400-led-son-surround-7-1-ref-ZX1662-3.jpg'),
+(23, 'Casque Gamer avec Micro', 'Micro-casque audio surround avec coussinets à mémoire de forme.', 69.00, 10, '6aa0803ccfa16-images.jpg'),
 (24, 'Siège Gamer Ergonomique', 'Fauteuil avec accoudoirs 4D et coussins lombaire et cervical.', 189.90, 10, '6aa0724a8cdba-71Wh0qNRK5L.jpg'),
 (25, 'Machine à Café à Grains', 'Cafetière expresso automatique avec broyeur et buse vapeur.', 379.00, 11, '6aa07c4e1a81e-images.jpeg'),
 (26, 'Aspirateur Robot Laveur', 'Robot aspirateur avec guidage laser et bac à eau pour lavage des sols.', 299.99, 11, '6aa07cc97e612-images.jpeg'),
