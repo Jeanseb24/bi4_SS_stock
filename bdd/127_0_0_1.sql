@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 08 sep. 2026 à 20:18
+-- Généré le : mar. 08 sep. 2026 à 21:35
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -85,31 +85,31 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `id_category`, `co
 (9, 'test9', 'test', 125.00, 5, '6aa02bd680612-6a9eb1394d5cf-images.jpg'),
 (10, 'Test Cat2', 'Test cat2', 15.00, 5, '6aa069a9e3a6d-o-3b0063b653ac86dd31f5ebd718194716-bmw-2-f22-f23-tail-light-part.jpg'),
 (11, 'Test Cat4', 'Catégorie 4 en test', 150.00, 6, '6aa069ec19573-u9h8bsny6mv9tft01zqtrxfjj41gxo28.jpg'),
-(12, 'PC Portable Ultra 15', 'Ordinateur portable 15 pouces avec processeur i7 et 16 Go de RAM.', 899.99, 7, 'image.jpg'),
-(13, 'Clavier Mécanique RGB', 'Clavier gamer avec interrupteurs tactiles et rétroéclairage personnalisable.', 79.50, 7, 'image.jpg'),
-(14, 'Souris Sans Fil Ergonomique', 'Souris sans fil rechargeable adaptée au travail prolongé.', 39.90, 7, 'image.jpg'),
-(15, 'Écran 27 Pouces 144Hz', 'Moniteur IPS QHD idéal pour la bureautique et le jeu vidéo.', 249.00, 7, 'image.jpg'),
-(16, 'Smartphone Alpha Pro', 'Smartphone écran OLED 6.5 pouces, 256 Go de stockage et triple capteur photo.', 649.00, 8, 'image.jpg'),
-(17, 'Montre Connectée Sport', 'Montre cardio avec GPS intégré, suivi d\'activité et étanchéité 50m.', 129.99, 8, 'image.jpg'),
-(18, 'Chargeur Rapide 65W GaN', 'Chargeur compact avec 2 ports USB-C et 1 port USB-A compatible charge rapide.', 34.90, 8, 'image.jpg'),
-(19, 'Casque Bluetooth ANC', 'Casque circum-aural avec réduction de bruit active et 30h d\'autonomie.', 149.99, 9, 'image.jpg'),
-(20, 'Enceinte Portable Waterproof', 'Enceinte sans fil résistante à l\'eau IPX7 avec basses renforcées.', 59.95, 9, 'image.jpg'),
-(21, 'Écouteurs Sans Fil True Wireless', 'Écouteurs intra-auriculaires avec boîtier de charge compact et réduction de bruit.', 89.00, 9, 'image.jpg'),
-(22, 'Manette Sans Fil Pro', 'Manette ergonomique compatible PC et consoles de salon.', 54.90, 10, 'image.jpg'),
-(23, 'Casque Gamer avec Micro', 'Micro-casque audio surround avec coussinets à mémoire de forme.', 69.00, 10, 'image.jpg'),
-(24, 'Siège Gamer Ergonomique', 'Fauteuil avec accoudoirs 4D et coussins lombaire et cervical.', 189.90, 10, 'image.jpg'),
-(25, 'Machine à Café à Grains', 'Cafetière expresso automatique avec broyeur et buse vapeur.', 379.00, 11, 'image.jpg'),
-(26, 'Aspirateur Robot Laveur', 'Robot aspirateur avec guidage laser et bac à eau pour lavage des sols.', 299.99, 11, 'image.jpg'),
-(27, 'Bouilloire Connectée Température Variable', 'Bouilloire inox 1.7L avec sélection précise de température.', 49.99, 11, 'image.jpg'),
-(28, 'Bureau Électrique Réglable', 'Bureau assis-debout motorisé avec plateau bois 140x70 cm.', 329.00, 12, 'image.jpg'),
-(29, 'Support Double Écran', 'Bras articulé pour deux moniteurs jusqu\'à 32 pouces fixation étau.', 45.00, 12, 'image.jpg'),
-(30, 'Téléviseur 4K UHD 55 Pouces', 'Smart TV LED 4K avec HDR10+ et assistants vocaux intégrés.', 499.00, 13, 'image.jpg'),
-(31, 'Passerelle Multimédia 4K', 'Lecteur streaming HDMI avec télécommande vocale et Wi-Fi 6.', 64.99, 13, 'image.jpg'),
-(32, 'Appareil Photo Hybride 24MP', 'Boîtier numérique avec capteur APS-C et enregistrement vidéo 4K.', 749.00, 14, 'image.jpg'),
-(33, 'Trépied Vidéo Aluminium', 'Trépied polyvalent avec tête fluide pour prise de vue stable.', 79.00, 14, 'image.jpg'),
-(34, 'Ampoule Connectée RGB E27', 'Ampoule LED connectée Wi-Fi sans pont requis, intensité variable.', 14.90, 15, 'image.jpg'),
-(35, 'Caméra de Sécurité Intérieure 2K', 'Caméra motorisée 360 degrés avec vision nocturne et détection de mouvement.', 39.99, 15, 'image.jpg'),
-(36, 'Hub USB-C 8-en-1', 'Adaptateur avec port HDMI 4K, lecteur SD, ports USB 3.0 et port réseau RJ45.', 29.99, 16, 'image.jpg');
+(12, 'PC Portable Ultra 15', 'Ordinateur portable 15 pouces avec processeur i7 et 16 Go de RAM.', 899.99, 7, '6aa070b32642a-images.jpeg'),
+(13, 'Clavier Mécanique RGB', 'Clavier gamer avec interrupteurs tactiles et rétroéclairage personnalisable.', 79.50, 7, '6aa070d6695bc-images.jpeg'),
+(14, 'Souris Sans Fil Ergonomique', 'Souris sans fil rechargeable adaptée au travail prolongé.', 39.90, 7, '6aa070efc1fc0-images.jpeg'),
+(15, 'Écran 27 Pouces 144Hz', 'Moniteur IPS QHD idéal pour la bureautique et le jeu vidéo.', 249.00, 7, '6aa0711591925-images.jpeg'),
+(16, 'Smartphone Alpha Pro', 'Smartphone écran OLED 6.5 pouces, 256 Go de stockage et triple capteur photo.', 649.00, 8, '6aa0713195641-sddefault.jpg'),
+(17, 'Montre Connectée Sport', 'Montre cardio avec GPS intégré, suivi d\'activité et étanchéité 50m.', 129.99, 8, '6aa071721855a-picture.jpg'),
+(18, 'Chargeur Rapide 65W GaN', 'Chargeur compact avec 2 ports USB-C et 1 port USB-A compatible charge rapide.', 34.90, 8, '6aa071a0ab810-images.jpeg'),
+(19, 'Casque Bluetooth ANC', 'Casque circum-aural avec réduction de bruit active et 30h d\'autonomie.', 149.99, 9, '6aa071c3d4817-images.jpeg'),
+(20, 'Enceinte Portable Waterproof', 'Enceinte sans fil résistante à l\'eau IPX7 avec basses renforcées.', 59.95, 9, '6aa071da60f9d-images.jpeg'),
+(21, 'Écouteurs Sans Fil True Wireless', 'Écouteurs intra-auriculaires avec boîtier de charge compact et réduction de bruit.', 89.00, 9, '6aa071f4e2473-images.jpeg'),
+(22, 'Manette Sans Fil Pro', 'Manette ergonomique compatible PC et consoles de salon.', 54.90, 10, '6aa0721177e5f-61MalolTdXL.jpg'),
+(23, 'Casque Gamer avec Micro', 'Micro-casque audio surround avec coussinets à mémoire de forme.', 69.00, 10, '6aa0722b0a146-micro-casque-lumineux-usb-special-gaming-ghs-400-led-son-surround-7-1-ref-ZX1662-3.jpg'),
+(24, 'Siège Gamer Ergonomique', 'Fauteuil avec accoudoirs 4D et coussins lombaire et cervical.', 189.90, 10, '6aa0724a8cdba-71Wh0qNRK5L.jpg'),
+(25, 'Machine à Café à Grains', 'Cafetière expresso automatique avec broyeur et buse vapeur.', 379.00, 11, '6aa07c4e1a81e-images.jpeg'),
+(26, 'Aspirateur Robot Laveur', 'Robot aspirateur avec guidage laser et bac à eau pour lavage des sols.', 299.99, 11, '6aa07cc97e612-images.jpeg'),
+(27, 'Bouilloire Connectée Température Variable', 'Bouilloire inox 1.7L avec sélection précise de température.', 49.99, 11, '6aa07ce1d9b6e-images.jpeg'),
+(28, 'Bureau Électrique Réglable', 'Bureau assis-debout motorisé avec plateau bois 140x70 cm.', 329.00, 12, '6aa07cf75adf1-images.jpeg'),
+(29, 'Support Double Écran', 'Bras articulé pour deux moniteurs jusqu\'à 32 pouces fixation étau.', 45.00, 12, '6aa07d36c5835-images.jpeg'),
+(30, 'Téléviseur 4K UHD 55 Pouces', 'Smart TV LED 4K avec HDR10+ et assistants vocaux intégrés.', 499.00, 13, '6aa07d92140e4-images.jpeg'),
+(31, 'Passerelle Multimédia 4K', 'Lecteur streaming HDMI avec télécommande vocale et Wi-Fi 6.', 64.99, 13, '6aa07dd7b0e5c-images.jpeg'),
+(32, 'Appareil Photo Hybride 24MP', 'Boîtier numérique avec capteur APS-C et enregistrement vidéo 4K.', 749.00, 14, '6aa07e04c1c99-images.jpeg'),
+(33, 'Trépied Vidéo Aluminium', 'Trépied polyvalent avec tête fluide pour prise de vue stable.', 79.00, 14, '6aa07e247205a-images.jpeg'),
+(34, 'Ampoule Connectée RGB E27', 'Ampoule LED connectée Wi-Fi sans pont requis, intensité variable.', 14.90, 15, '6aa07e5080191-images.jpeg'),
+(35, 'Caméra de Sécurité Intérieure 2K', 'Caméra motorisée 360 degrés avec vision nocturne et détection de mouvement.', 39.99, 15, '6aa07e66192f4-images.jpeg'),
+(36, 'Hub USB-C 8-en-1', 'Adaptateur avec port HDMI 4K, lecteur SD, ports USB 3.0 et port réseau RJ45.', 29.99, 16, '6aa07e7ac3a39-images.jpeg');
 
 -- --------------------------------------------------------
 
