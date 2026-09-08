@@ -31,7 +31,7 @@
 <?php include("partials/head.php"); ?>
 <body>
     <?php include("partials/nav.php"); ?>
-    <div class="container">
+    <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
         <h2>Modifier produit: <?= htmlspecialchars($product['name']) ?></h2>
         <form action="treatmentUpdateProduct.php?id=<?= $product['id'] ?>" method="POST" enctype="multipart/form-data">
             <!-- faille CSRF -->
