@@ -1,7 +1,7 @@
 <?php
     $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
-<nav class="navbar navbar-expand-lg bg-body-tertiary" style="--bs-navbar-active-color: #0d6efd;">
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" style="--bs-navbar-active-color: #0d6efd;">
   <div class="container-fluid">
     <a class="navbar-brand" href="../index.php">Admin Stock</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

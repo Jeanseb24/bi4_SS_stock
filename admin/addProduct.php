@@ -14,7 +14,7 @@
 <?php include("partials/head.php"); ?>
 <body>
     <?php include("partials/nav.php"); ?>
-    <div class="container">
+    <div class="container-fluid px-3 px-md-5 py-5 mx-auto" style="max-width: 1400px;">
         <h2>Ajouter un produit</h2>
         <form action="treatmentAddProduct.php" method="POST" enctype="multipart/form-data">
             <?php 
@@ -53,7 +53,7 @@
                 <input type="file" name="cover" id="cover" class="form-control">
             </div>
             <div class="form-group my-2">
-                <input type="submit" value="Ajouter" class="btn btn-primary">
+                <input type="submit" value="Ajouter" class="btn btn-outline-primary my-3">
             </div>
         </form>
     </div>

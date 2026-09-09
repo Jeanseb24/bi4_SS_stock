@@ -13,7 +13,7 @@
 <?php include("partials/head.php"); ?>
 <body>
     <?php include("partials/nav.php"); ?>
-    <div class="container">
+    <div class="container-fluid px-3 px-md-5 py-5 mx-auto" style="max-width: 1400px;">
         <h2>Ajouter une catégorie</h2>
         <form action="treatmentAddCategory.php" method="POST">
             <!-- GESTION CSRF -->
@@ -31,7 +31,7 @@
                 <textarea name="description" id="description" class="form-control"></textarea>
             </div>
             <div class="form-group my-2">
-                <input type="submit" value="Ajouter" class="btn btn-primary">
+                <input type="submit" value="Ajouter" class="btn btn-outline-primary my-3">
             </div>
         </form>
     </div>
