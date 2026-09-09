@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 09 sep. 2026 à 08:40
+-- Généré le : mer. 09 sep. 2026 à 16:16
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `email`, `password`) VALUES
-(1, 'Admin', 'admin@myepse.be', '$2y$10$tJKd5u9SLHglYvLsjKWVmuurt/mZhx28fFTj8Zw9IsLYpq6.BGCbq');
+(1, 'Admin', 'admin@myepse.be', '$2y$10$iXFJqoA40mxHcr.mwYBQ/uMz3mvUYrVEtdmpQCW.2GhNcCqPkBkOi');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
