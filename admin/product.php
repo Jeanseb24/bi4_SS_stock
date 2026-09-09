@@ -45,7 +45,7 @@
     <div class="container-fluid py-5 mx-auto" style="max-width: 80vw;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Détail du produit</h2>
-            <a href="products.php" class="btn btn-outline-secondary">
+            <a href="products.php" class="btn btn-outline-primary my-3">
                 &larr; Retour à la liste
             </a>
         </div>
@@ -56,7 +56,7 @@
                     <div class="row g-0">
                         <!-- Colonne gauche : image -->
                         <div class="col-md-5">
-                            
+
                             <?php if ($hasImage) : ?>
 
                                 <img src="<?= htmlspecialchars($coverPath) ?>" class="img-fluid rounded-start w-100 h-100" alt="<?= htmlspecialchars($product['name']) ?>" style="object-fit: cover;">
