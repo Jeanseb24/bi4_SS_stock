@@ -1,26 +1,11 @@
-// Fonction de filtre AJAX
-function filterProducts() {
-    const query = document.getElementById('searchInput').value;
-    const category = document.getElementById('category').value;
+// pour admin/products.php >> redirige vers product.php au clic + désactiver click sur zone 'data-no-click' pour éviter click sur Actions
 
-    fetch(`searchProduct.php?q=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('productsTableBody').innerHTML = html;
-        })
-        .catch(error => console.error('Erreur lors de la recherche :', error));
-}
-
-// Gestion globale du clic sur les lignes (Event Delegation)
-// Fonctionne au chargement ET après le filtre AJAX
-document.addEventListener('click', function (e) {
-    const row = e.target.closest('.clickable-row');
-    
-    // Si on clique sur une ligne ET qu'on n'est PAS dans une zone 'data-no-click'
-    if (row && !e.target.closest('[data-no-click]')) {
-        const href = row.dataset.href;
-        if (href) {
-            window.location.href = href;
+document.querySelectorAll('.clickable-row').forEach(function(row) {
+    row.addEventListener('click', function(e) {
+        // si le clic vient d'une zone marquée "data-no-click" (colonne Actions), on ignore
+        if (e.target.closest('[data-no-click]')) {
+            return;
         }
-    }
+        window.location = this.dataset.href;
+    });
 });
