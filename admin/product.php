@@ -45,7 +45,7 @@
     <div class="container-fluid py-5 mx-auto" style="max-width: 80vw;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Détail du produit</h2>
-            <a href="products.php" class="btn btn-outline-primary my-3">
+            <a href="products.php" class="btn btn-outline-primary btn-sm my-3">
                 &larr; Retour à la liste
             </a>
         </div>
@@ -87,10 +87,10 @@
                                 </p>
 
                                 <div class="d-flex gap-2">
-                                    <a href="updateProduct.php?id=<?= urlencode($product['id']) ?>" class="btn btn-warning">
+                                    <a href="updateProduct.php?id=<?= urlencode($product['id']) ?>" class="btn btn-warning btn-sm">
                                         Modifier
                                     </a>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         Supprimer
                                     </button>
                                 </div>

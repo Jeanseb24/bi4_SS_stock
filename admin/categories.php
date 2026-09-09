@@ -51,7 +51,7 @@
             // récupère toutes les données de la table catégorie en une fois => fetchAll()
             $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY id ASC");
         ?>
-        <a href="addCategory.php" class="btn btn-outline-primary my-3">Ajouter une catégorie</a>
+        <a href="addCategory.php" class="btn btn-outline-primary btn-sm my-3">Ajouter une catégorie</a>
 
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle text-center w-100 border">

@@ -45,7 +45,7 @@
                 <textarea name="description" id="description" class="form-control"><?= ($category['description']) ?></textarea>
             </div>
             <div class="form-group my-2">
-                <input type="submit" value="Modifier" class="btn btn-warning">
+                <input type="submit" value="Modifier" class="btn btn-warning btn-sm">
             </div>
         </form>
     </div>

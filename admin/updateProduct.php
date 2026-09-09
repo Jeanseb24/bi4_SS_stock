@@ -77,7 +77,7 @@
                 <input type="file" name="cover" id="cover" class="form-control">
             </div>
             <div class="form-group my-2">
-                <input type="submit" value="Modifier" class="btn btn-warning">
+                <input type="submit" value="Modifier" class="btn btn-warning btn-sm">
             </div>
         </form>
     </div>

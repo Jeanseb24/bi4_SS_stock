@@ -62,12 +62,12 @@
         
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3">
 
-        <a href="addProduct.php" class="btn btn-outline-primary my-3">Ajouter un produit</a>
+        <a href="addProduct.php" class="btn btn-outline-primary btn-sm my-3">Ajouter un produit</a>
             
             <!--  filtrage via select -->
             <form method="GET" action="products.php" class="d-flex align-items-center gap-2">
                 <label for="category" class="mb-0 text-nowrap">Catégorie :</label>
-                <select name="category" id="category" class="form-select" style="width: auto;" onchange="this.form.submit()">
+                <select name="category" id="category" class="form-select m-3" style="width: auto;" onchange="this.form.submit()">
                     <option value="">Toutes les catégories</option>
 
                     <?php foreach ($categories as $category) : ?>

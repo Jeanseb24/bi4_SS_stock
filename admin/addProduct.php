@@ -53,7 +53,7 @@
                 <input type="file" name="cover" id="cover" class="form-control">
             </div>
             <div class="form-group my-2">
-                <input type="submit" value="Ajouter" class="btn btn-outline-primary my-3">
+                <input type="submit" value="Ajouter" class="btn btn-outline-primary btn-sm my-3">
             </div>
         </form>
     </div>
