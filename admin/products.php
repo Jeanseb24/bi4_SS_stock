@@ -97,15 +97,13 @@
                 </thead>
                 <tbody>
                     <?php foreach ($products as $product) : ?>
-                        <tr>
+                        <tr class="clickable-row" style="cursor: pointer;" data-href="product.php?id=<?= urlencode($product['id']) ?>">
                             <th scope="row"><?= $product['id'] ?></th>
+
                             <?php
-                                // Construction du chemin de l'image et vérification de sa présence
-                                // (on fait confiance à la colonne "cover" plutôt que de vérifier
-                                // le disque à chaque itération, pour éviter un appel file_exists
-                                // coûteux dans la boucle)
+
                                 $coverPath = "../images/" . ($product['cover'] ?? '');
-                                // est-ce que ce produit a un nom de fichier d'image renseigné ?
+
                                 $hasImage = !empty($product['cover']);
                             ?>
                             <td>
@@ -114,7 +112,7 @@
                                     <img src="<?= htmlspecialchars($coverPath) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
                                 
                                 <?php else : ?>
-                                    <!-- placeholder affiché si aucune image n'est associée au produit -->
+
                                     <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
                                         <i class="bi bi-image text-white"></i>
                                     </div>
@@ -124,7 +122,9 @@
                             <td><?= htmlspecialchars($product['name']) ?></td>
                             <td><?= htmlspecialchars($product['category_name']) ?></td>
                             <td><?= number_format($product['price'], 2, ',', ' ') ?>€</td>
-                            <td>
+
+                            <!-- data-no-click annule click javascript sur 'Actions' -->
+                            <td data-no-click>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="updateProduct.php?id=<?= urlencode($product['id']) ?>" class="btn btn-warning btn-sm">
                                         Modifier
@@ -146,8 +146,9 @@
                                                 Voulez-vous vraiment<br>supprimer le produit <strong><?= htmlspecialchars($product['name']) ?></strong> ?
                                             </div>
                                             <div class="modal-footer">
+
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
-                                                <!-- redéclenche products.php avec ?delete=ID -->
+
                                                 <a href="products.php?delete=<?= urlencode($product['id']) ?>" class="btn btn-danger btn-sm">Supprimer</a>
                                             </div>
                                         </div>
@@ -161,6 +162,17 @@
         </div>
 
     </div>
+<script>
+document.querySelectorAll('.clickable-row').forEach(function(row) {
+    row.addEventListener('click', function(e) {
+        // si le clic vient d'une zone marquée "data-no-click" (colonne Actions), on ignore
+        if (e.target.closest('[data-no-click]')) {
+            return;
+        }
+        window.location = this.dataset.href;
+    });
+});
+</script>
 </body>
 </html>
 
