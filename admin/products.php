@@ -9,22 +9,23 @@
     require_once "../config/connexion.php";
     require "functions.php";
 
-     if(isset($_GET['delete']) && filter_var($_GET['delete'],FILTER_VALIDATE_INT)){
-       $delete = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['delete']]);
-       if(!$delete){
-        header("Location: ../404.php");
-        exit();
-       }else{
-        if(file_exists("../images/".$delete['cover'])){
-            unlink("../images/".$delete['cover']);
+    if(isset($_GET['delete']) && filter_var($_GET['delete'], FILTER_VALIDATE_INT)){
+        $delete = fetchOne($bdd, "SELECT * FROM products WHERE id=?", [$_GET['delete']]);
+        if(!$delete){
+            // Id inexistant en BDD -> on bloque avec une 404
+            header("Location: ../404.php");
+            exit();
+        } else {
+            // suppression du fichier image associé sur le serveur, si présent
+            if(file_exists("../images/".$delete['cover'])){
+                unlink("../images/".$delete['cover']);
+            }
         }
-      
-       }
 
-       $result = execute($bdd,"DELETE FROM products WHERE id=?",[$_GET['delete']]);
-       //var_dump($result);
+        // suppression en bdd
+        $result = execute($bdd, "DELETE FROM products WHERE id=?", [$_GET['delete']]);
+        //var_dump($result);
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -34,43 +35,54 @@
     <?php include("partials/nav.php"); ?>
     <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
         <h2>Gestion des produits</h2>
+        
         <?php
+            // --- récupération des catégories pour remplir le select ---
+            $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
+
+            // catégorie actuellement sélectionnée via le filtre GET (chaîne vide = pas de filtre)
             $selectedCategory = $_GET['category'] ?? '';
 
-            if (!empty($selectedCategory) && filter_var($selectedCategory, FILTER_VALIDATE_INT)) {
-                $products = fetchAll($bdd, "
-                    SELECT products.*, categories.name AS category_name 
-                    FROM products 
-                    JOIN categories ON products.id_category = categories.id 
-                    WHERE products.id_category = ?
-                    ORDER BY products.id ASC
-                ", [$selectedCategory]);
-            } else {
-                $products = fetchAll($bdd, "
-                    SELECT products.*, categories.name AS category_name 
-                    FROM products 
-                    JOIN categories ON products.id_category = categories.id 
-                    ORDER BY products.id ASC
-                ");
-            }
-            $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
+            // --- Récupération des produits, avec filtrage optionnel par catégorie ---
+            // On joint products et categories pour récupérer le nom de la catégorie associée
+            // (category_name) plutôt que son simple id.
+            // Le WHERE n'est ajouté à la requête que si une catégorie a été sélectionnée,
+            // afin d'éviter une clause inutile quand on veut afficher tous les produits.
+            $products = fetchAll(
+                $bdd,
+                "SELECT products.id, products.name, categories.name as category_name, products.price, products.cover 
+                FROM products 
+                INNER JOIN categories ON products.id_category = categories.id" . ($selectedCategory !== '' ? " WHERE products.id_category = ?" : "") . " ORDER BY products.id ASC",
+                
+                // Le tableau de paramètres est vide si aucun filtre n'est actif,
+                // sinon il contient l'id de la catégorie à filtrer (protège contre l'injection SQL)
+                $selectedCategory !== '' ? [$selectedCategory] : []
+            );
         ?>
+        
         <div class="d-flex justify-content-between align-items-center">
-            <a href="addProduct.php" class="btn btn-outline-primary my-3">Ajouter un produit</a>
 
+        <a href="addProduct.php" class="btn btn-outline-primary my-3">Ajouter un produit</a>
+            
+            <!--  filtrage via select -->
             <form method="GET" action="products.php" class="d-flex align-items-center gap-2">
                 <label for="category" class="mb-0">Catégorie :</label>
                 <select name="category" id="category" class="form-select" style="width: auto;" onchange="this.form.submit()">
                     <option value="">Toutes les catégories</option>
+
                     <?php foreach ($categories as $category) : ?>
-                        <option value="<?= htmlspecialchars($category['id']) ?>"
-                            <?= ($selectedCategory == $category['id']) ? 'selected' : '' ?>>
+                        <!-- L'attribut "selected" est ajouté dynamiquement si cette catégorie
+                             correspond à celle actuellement filtrée, pour conserver le choix
+                             visuellement après rechargement de la page -->
+                        <option value="<?= htmlspecialchars($category['id']) ?>"<?= ($selectedCategory == $category['id']) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($category['name']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </form>
         </div>
+
+        <!-- tableau des produits -->
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle text-center w-100 border">
                 <thead>
@@ -88,25 +100,30 @@
                         <tr>
                             <th scope="row"><?= $product['id'] ?></th>
                             <?php
+                                // Construction du chemin de l'image et vérification de sa présence
+                                // (on fait confiance à la colonne "cover" plutôt que de vérifier
+                                // le disque à chaque itération, pour éviter un appel file_exists
+                                // coûteux dans la boucle)
                                 $coverPath = "../images/" . ($product['cover'] ?? '');
-                                $hasImage = !empty($product['cover']) && file_exists($coverPath);
+                                // est-ce que ce produit a un nom de fichier d'image renseigné ?
+                                $hasImage = !empty($product['cover']);
                             ?>
                             <td>
                                 <?php if ($hasImage) : ?>
-                                    <img src="<?= htmlspecialchars($coverPath) ?>" 
-                                        alt="<?= htmlspecialchars($product['name']) ?>" 
-                                        class="rounded" 
-                                        style="width: 60px; height: 60px; object-fit: cover;">
+
+                                    <img src="<?= htmlspecialchars($coverPath) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                                
                                 <?php else : ?>
-                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" 
-                                        style="width: 60px; height: 60px;">
+                                    <!-- placeholder affiché si aucune image n'est associée au produit -->
+                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
                                         <i class="bi bi-image text-white"></i>
                                     </div>
+
                                 <?php endif; ?>
                             </td>
                             <td><?= htmlspecialchars($product['name']) ?></td>
                             <td><?= htmlspecialchars($product['category_name']) ?></td>
-                            <td><?= $product['price'] ?>€</td>
+                            <td><?= number_format($product['price'], 2, ',', ' ') ?>€</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="updateProduct.php?id=<?= urlencode($product['id']) ?>" class="btn btn-warning btn-sm">
@@ -126,10 +143,11 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Voulez-vous vraimet<br>supprimer le produit <strong><?= htmlspecialchars($product['name']) ?></strong> ?
+                                                Voulez-vous vraiment<br>supprimer le produit <strong><?= htmlspecialchars($product['name']) ?></strong> ?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
+                                                <!-- redéclenche products.php avec ?delete=ID -->
                                                 <a href="products.php?delete=<?= urlencode($product['id']) ?>" class="btn btn-danger btn-sm">Supprimer</a>
                                             </div>
                                         </div>

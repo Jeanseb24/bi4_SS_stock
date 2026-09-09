@@ -34,6 +34,12 @@
 
 ?>
 
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="fr" data-bs-theme="dark">
 <?php include("partials/head.php"); ?>
@@ -65,9 +71,7 @@
                             <td><?= htmlspecialchars($category['description']) ?></td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="updateCategory.php?id=<?= urlencode($category['id']) ?>" class="btn btn-warning btn-sm">
-                                        Modifier
-                                    </a>
+                                    <a href="updateCategory.php?id=<?= $category['id'] ?>" class="btn btn-warning btn-sm">Modifier</a>
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $category['id'] ?>">
                                         Supprimer
                                     </button>
@@ -82,11 +86,11 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Voulez-vous vraimet<br>supprimer la catégorie <strong><?= htmlspecialchars($category['name']) ?></strong> ?
+                                                Voulez-vous vraimet<br>supprimer la catégorie <strong><?= $category['name'] ?></strong> ?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
-                                                <a href="categories.php?delete=<?= urlencode($category['id']) ?>" class="btn btn-danger btn-sm">Supprimer</a>
+                                                <a href="categories.php?delete=<?= $category['id'] ?>" class="btn btn-danger btn-sm">Supprimer</a>
                                             </div>
                                         </div>
                                     </div>

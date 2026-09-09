@@ -1,0 +1,19 @@
+admin/updateProduct.php
+
+    - peut-on récupérer la $categories (ligne45) au début du php après $products (L19) ?
+    ( + facile pour var_dump ou bien suffit de le monter au dessus du select ?)
+
+    - pourquoi peut-on retirer htmlspecialchars ligne 62 66 75 ?
+
+admin/treatmentUpdateProduct.php
+
+    - pourquoi on ne fait pas un try à la ligne 169 comme à la 127/129 ?
+
+admin/products.php
+
+    - filtrage_cat (L39>83) valable ? peine à comprendre requête sql..
+
+    - récupération image + affichage placeholder si problème image correct ? 
+
+    - format price L126
+

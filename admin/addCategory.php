@@ -16,10 +16,12 @@
     <div class="container">
         <h2>Ajouter une catégorie</h2>
         <form action="treatmentAddCategory.php" method="POST">
+            <!-- GESTION CSRF -->
             <?php 
                 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             ?>
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+             <!-- FIN GESTION CSRF -->
             <div class="form-group">
                <label for="nom">Nom: </label>
                <input type="text" name="name" id="nom" class="form-control">

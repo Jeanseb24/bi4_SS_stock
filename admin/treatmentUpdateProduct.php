@@ -63,9 +63,6 @@
         // récup l'image (savoir s'il y a une image ou pas)
        $newImage = isset($_FILES['cover']) && $_FILES['cover']['error'] !== UPLOAD_ERR_NO_FILE;
 
-
-
-
         // s'il y a une image
         if($newImage){
             // vérification si l'image envoyée est ok
@@ -192,3 +189,4 @@
         header("Location: updateProduct.php?id=".$product['id']."&error=".$err);
         exit();
     }
+

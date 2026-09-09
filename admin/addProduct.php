@@ -6,11 +6,7 @@
         exit();
     }
 
-    require "../config/connexion.php";
-    require "functions.php";
-
-    $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
-
+    
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +24,11 @@
             <div class="form-group my-2">
                 <label for="categorie">Catégorie: </label>
                 <select name="categorie" id="categorie" class="form-control">
+                    <?php
+                            require "../config/connexion.php";
+                            require "functions.php";
+                            $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
+                    ?>
                     <?php foreach ($categories as $category) : ?>
                         <option value="<?= htmlspecialchars($category['id']) ?>">
                             <?= htmlspecialchars($category['name']) ?>
@@ -58,3 +59,4 @@
     </div>
 </body>
 </html>
+

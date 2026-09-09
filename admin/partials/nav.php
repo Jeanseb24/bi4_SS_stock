@@ -15,14 +15,14 @@
              href="dashboard.php">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?= ($currentPage === 'products.php') ? 'active' : '' ?>" 
-             <?= ($currentPage === 'products.php') ? 'aria-current="page"' : '' ?> 
-             href="products.php">Produits</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link <?= ($currentPage === 'categories.php') ? 'active' : '' ?>" 
              <?= ($currentPage === 'categories.php') ? 'aria-current="page"' : '' ?> 
              href="categories.php">Catégories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <?= ($currentPage === 'products.php') ? 'active' : '' ?>" 
+             <?= ($currentPage === 'products.php') ? 'aria-current="page"' : '' ?> 
+             href="products.php">Produits</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
@@ -36,3 +36,4 @@
     </div>
   </div>
 </nav>
+
