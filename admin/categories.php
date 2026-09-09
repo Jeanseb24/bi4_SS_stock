@@ -45,7 +45,7 @@
 <?php include("partials/head.php"); ?>
 <body>
     <?php include("partials/nav.php"); ?>
-    <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
+    <div class="container-fluid px-3 px-md-5 py-5 mx-auto" style="max-width: 1400px;">
         <h2>Gestion des catégories</h2>
         <?php
             // récupère toutes les données de la table catégorie en une fois => fetchAll()
@@ -57,18 +57,18 @@
             <table class="table table-hover table-striped align-middle text-center w-100 border">
                 <thead>
                     <tr>
-                        <th scope="col"># Id</th>
+                        <th scope="col" class="d-none d-md-table-cell"># Id</th>
                         <th scope="col">Nom</th>
-                        <th scope="col">Description</th>
+                        <th scope="col" class="d-none d-md-table-cell">Description</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($categories as $category) : ?>
                         <tr>
-                            <th scope="row"><?= $category['id'] ?></th>
+                            <th scope="row" class="d-none d-md-table-cell"><?= $category['id'] ?></th>
                             <td><?= htmlspecialchars($category['name']) ?></td>
-                            <td><?= htmlspecialchars($category['description']) ?></td>
+                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($category['description']) ?></td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="updateCategory.php?id=<?= $category['id'] ?>" class="btn btn-warning btn-sm">Modifier</a>

@@ -33,7 +33,7 @@
 <?php include("partials/head.php"); ?>
 <body>
     <?php include("partials/nav.php"); ?>
-    <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
+    <div class="container-fluid px-3 px-md-5 py-5 mx-auto" style="max-width: 1400px;">
         <h2>Gestion des produits</h2>
         
         <?php
@@ -60,13 +60,13 @@
             );
         ?>
         
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3">
 
         <a href="addProduct.php" class="btn btn-outline-primary my-3">Ajouter un produit</a>
             
             <!--  filtrage via select -->
             <form method="GET" action="products.php" class="d-flex align-items-center gap-2">
-                <label for="category" class="mb-0">Catégorie :</label>
+                <label for="category" class="mb-0 text-nowrap">Catégorie :</label>
                 <select name="category" id="category" class="form-select" style="width: auto;" onchange="this.form.submit()">
                     <option value="">Toutes les catégories</option>
 
@@ -89,9 +89,9 @@
                     <tr>
                         <th scope="col"># Id</th>
                         <th scope="col">Image</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Catégorie</th>
-                        <th scope="col">Prix</th>
+                        <th scope="col" class="d-none d-md-table-cell">Nom</th>
+                        <th scope="col" class="d-none d-md-table-cell">Catégorie</th>
+                        <th scope="col" class="d-none d-md-table-cell">Prix</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -119,9 +119,9 @@
 
                                 <?php endif; ?>
                             </td>
-                            <td><?= htmlspecialchars($product['name']) ?></td>
-                            <td><?= htmlspecialchars($product['category_name']) ?></td>
-                            <td><?= number_format($product['price'], 2, ',', ' ') ?>€</td>
+                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($product['name']) ?></td>
+                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($product['category_name']) ?></td>
+                            <td class="d-none d-md-table-cell"><?= number_format($product['price'], 2, ',', ' ') ?>€</td>
 
                             <!-- data-no-click annule click javascript sur 'Actions' -->
                             <td data-no-click>
