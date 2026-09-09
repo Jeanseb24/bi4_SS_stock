@@ -20,8 +20,8 @@
     require "../config/connexion.php";
     require "functions.php";
 
-    $Category = fetchOne($bdd,"SELECT * FROM categories WHERE id=?",[$_GET['id']]);
-    if(!$Category){
+    $category = fetchOne($bdd,"SELECT * FROM categories WHERE id=?",[$_GET['id']]);
+    if(!$category){
         header("Location: ../404.php");
         exit();
     }
@@ -38,22 +38,18 @@
     }
 
     if($err===0){
-        try{
+        
             execute($bdd, "UPDATE categories SET name = :name, description = :description WHERE id = :id", [
                 "name" => $name,
                 "description" => $description,
                 "id" => $_GET['id']
             ]);
             unset($_SESSION['csrf_token']);
-            header("Location: categories.php?add=success");
+            header("Location: categories.php?update=success&upid=".$category['id']);
             exit();
-        }catch (PDOException $e) {
-            $_SESSION['error'] = "Cette catégorie existe déjà.";
-            header('Location: updateCategory.php?id=' . $_GET['id']);
-            exit();
-        }
-    } else {
-        $_SESSION['error'] = ($err === 1) ? "Le nom est obligatoire." : "La description est obligatoire.";
-        header('Location: updateCategory.php?id=' . $_GET['id']);
+
+        } else {
+        
+        header('Location: updateCategory.php?id='.$category['id']."&error=".$err);
         exit();
     }

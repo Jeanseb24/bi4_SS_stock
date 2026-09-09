@@ -42,7 +42,7 @@
     $productsNoImage = fetchAll($bdd, "SELECT id, name FROM products WHERE cover IS NULL OR cover = ''");
 
     // Derniers produits ajoutés (les 5 plus récents par id décroissant)
-    $recentProducts = fetchAll($bdd, "SELECT id, name, price FROM products ORDER BY id DESC LIMIT 5");
+    $recentProducts = fetchAll($bdd, "SELECT id, name, price FROM products ORDER BY id DESC LIMIT 10");
 ?>
 
 <!DOCTYPE html>

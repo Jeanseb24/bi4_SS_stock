@@ -14,7 +14,7 @@
 
     require "../config/connexion.php";
     require "functions.php";
-    
+    //récupération catégorie pour permettre modif dans update
     $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
     // vérification si le produit existe bien
     $product = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['id']]);
@@ -22,8 +22,8 @@
         header("Location: ../404.php");
         exit();
     }
-
-
+    // var_dump($product);
+    // die();
 ?>
 
 <!DOCTYPE html>

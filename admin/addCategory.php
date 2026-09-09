@@ -15,7 +15,7 @@
     <?php include("partials/nav.php"); ?>
     <div class="container">
         <h2>Ajouter une catégorie</h2>
-        <form action="treatmentAddCategory.php" method="POST" enctype="multipart/form-data">
+        <form action="treatmentAddCategory.php" method="POST">
             <?php 
                 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             ?>
@@ -35,3 +35,4 @@
     </div>
 </body>
 </html>
+

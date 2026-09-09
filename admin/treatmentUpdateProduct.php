@@ -109,7 +109,7 @@
                 "webp" => "image/webp"
             ];
             if(!in_array($mimeReel, $mimesAutorises, true) || $mimesAutorises[$extension] !== $mimeReel){
-                header("Location:  updateProduct.php?id=".$product['id']."&error=9");
+                header("Location: updateProduct.php?id=".$product['id']."&error=9");
                 exit();
             }
             /************************/ 

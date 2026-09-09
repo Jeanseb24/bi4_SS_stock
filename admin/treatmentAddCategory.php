@@ -23,21 +23,19 @@
         $err = 2;
     }
 
-        if($err===0){
-            require "../config/connexion.php";
-            require "functions.php";
-            try{
-                insert($bdd, "INSERT INTO categories(name,description) VALUES(:name,:description)",[
-                    "name" => $name,
-                    "description" => $description
-                ]);
-                unset($_SESSION['csrf_token']);
-                header("Location: categories.php?add=success");
-                exit();
-            }catch (PDOException $e) {
-                $_SESSION['error'] = "Cette catégorie existe déjà.";
+    if($err===0){
+        require "../config/connexion.php";
+        require "functions.php";
+        
+            insert($bdd, "INSERT INTO categories(name,description) VALUES(:name,:description)",[
+                "name" => $name,
+                "description" => $description
+            ]);
+            unset($_SESSION['csrf_token']);
+            header("Location: categories.php?add=success");
+            exit();
+        }else{
+            header('Location: addCategory.php?error='.$err);
+            exit;
+        }
 
-                header('Location: addCategory.php');
-                exit;
-            }
-}
