@@ -50,28 +50,32 @@
 <?php include("partials/head.php"); ?>
 <body>
     <?php include("partials/nav.php"); ?>
-    <div class="container-fluid py-5 mx-auto" style="width: 80vw;">
+    <div class="container-fluid px-3 px-md-5 py-5 mx-auto" style="max-width: 1400px;">
         <h2 class="mb-4">Tableau de bord</h2>
 
         <!-- KPIs -->
         <div class="row g-3 mb-4">
             <div class="col-md-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <i class="bi bi-box-seam fs-2 text-primary"></i>
-                        <h3 class="mt-2"><?= (int) $totalProducts['total'] ?></h3>
-                        <p class="text-muted mb-0">Produits</p>
+                <a href="products.php" class="text-decoration-none text-rest">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="bi bi-box-seam fs-2 text-primary"></i>
+                            <h3 class="mt-2"><?= (int) $totalProducts['total'] ?></h3>
+                            <p class="text-muted mb-0">Produits</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <i class="bi bi-tags fs-2 text-success"></i>
-                        <h3 class="mt-2"><?= (int) $totalCategories['total'] ?></h3>
-                        <p class="text-muted mb-0">Catégories</p>
+                <a href="categories.php" class="text-decoration-none text-reset">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <i class="bi bi-tags fs-2 text-success"></i>
+                            <h3 class="mt-2"><?= (int) $totalCategories['total'] ?></h3>
+                            <p class="text-muted mb-0">Catégories</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
                 <div class="card text-center h-100">
