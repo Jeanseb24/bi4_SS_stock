@@ -24,17 +24,16 @@
              <!-- FIN GESTION CSRF -->
             <div class="form-group">
                <label for="nom">Nom: </label>
-               <input type="text" name="name" id="nom" class="form-control">
+               <input type="text" name="name" id="nom" class="form-control my-2">
             </div>
             <div class="form-group my-2">
                 <label for="description">Déscription: </label>
-                <textarea name="description" id="description" class="form-control"></textarea>
+                <textarea name="description" id="description" class="form-control my-2"></textarea>
             </div>
             <div class="form-group my-2">
-                <input type="submit" value="Ajouter" class="btn btn-outline-primary btn-sm my-3">
+                <input type="submit" value="Ajouter" class="btn btn-outline-primary btn-sm my-2">
             </div>
         </form>
     </div>
 </body>
 </html>
-

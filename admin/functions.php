@@ -77,4 +77,3 @@ function execute(PDO $pdo, string $sql, array $params = []): int
 {
     return dbQuery($pdo, $sql, $params)->rowCount();
 }
-

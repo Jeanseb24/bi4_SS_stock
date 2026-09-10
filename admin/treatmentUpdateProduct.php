@@ -14,7 +14,7 @@
         http_response_code(403);
         exit("Jeton de sécurité invalide");
     }
-    /************************/
+     /************************/
 
     // récupération du produit à modifier (via son identifiant)
     // sécu de l'id
@@ -41,7 +41,7 @@
     // nettoyage des données (hors fichier) 
     $name = trim($_POST['name'] ?? "");
     $description = trim($_POST['description'] ?? "");
-    $price = trim($_POST['price'] ?? "");
+    $prix = trim($_POST['prix'] ?? "");
     $categorie = trim($_POST['categorie'] ?? "");
 
     // vérification des données en conformité avec ce que l'on veut récupérer
@@ -49,9 +49,9 @@
         $err = 1;
     }elseif (empty($description)){
         $err = 2;
-    }elseif (empty($price)){
+    }elseif (empty($prix)){
         $err = 3;
-    }elseif(!filter_var($price, FILTER_VALIDATE_FLOAT)){
+    }elseif(!filter_var($prix, FILTER_VALIDATE_FLOAT)){
         $err = 4;
     }elseif(!filter_var($categorie, FILTER_VALIDATE_INT)){
         $err = 5;
@@ -62,7 +62,7 @@
 
         // récup l'image (savoir s'il y a une image ou pas)
        $newImage = isset($_FILES['cover']) && $_FILES['cover']['error'] !== UPLOAD_ERR_NO_FILE;
-
+        
         // s'il y a une image
         if($newImage){
             // vérification si l'image envoyée est ok
@@ -106,7 +106,7 @@
                 "webp" => "image/webp"
             ];
             if(!in_array($mimeReel, $mimesAutorises, true) || $mimesAutorises[$extension] !== $mimeReel){
-                header("Location: updateProduct.php?id=".$product['id']."&error=9");
+                header("Location:  updateProduct.php?id=".$product['id']."&error=9");
                 exit();
             }
             /************************/ 
@@ -126,10 +126,10 @@
                 // mise à jour de la bdd
                 try{
                     // gestion de la modification 
-                    execute($bdd, "UPDATE products SET name = :name, description = :description, price = :price, id_category = :categorie, cover = :cover WHERE id= :id",[
+                    execute($bdd, "UPDATE products SET name = :name, description = :description, prix = :prix, id_category = :categorie, cover = :cover WHERE id= :id",[
                         "name" => $name,
                         "description" => $description,
-                        "price" => $price,
+                        "prix" => $prix,
                         "categorie" => $categorie,
                         "cover" => $uniqnomSafe,
                         "id" => $product['id']
@@ -142,9 +142,15 @@
                      if(file_exists($dossierDestination.$product['cover'])){
                         unlink($dossierDestination.$product['cover']);
                     }
+                     if(file_exists($dossierDestination."mini_".$product['cover'])){
+                        //"../images/ "."mini_"."nomfichier.jpg"
+                        unlink($dossierDestination."mini_".$product['cover']);
+                    }
 
                     // redirection vers la page products.php avec l'id du produit modifié
-                    header("Location: products.php?update=success&upid=".$product['id']);
+                    // redim.php?image=161561-monimage.jpg&update=23
+                    // $_GET = ["image"=>"161561-monimage.jpg", "update"=>23]
+                     header("Location: redim.php?image=".urlencode($uniqnomSafe)."&update=".$product['id']);
                     exit();
                 }catch(PDOException $e){
                     // en cas d'erreur
@@ -166,10 +172,10 @@
         }else{
             // il n'y a pas d'image
             // update sans gestion de l'image
-            execute($bdd, "UPDATE products SET name = :name, description = :description, price = :price, id_category = :categorie WHERE id= :id",[
+            execute($bdd, "UPDATE products SET name = :name, description = :description, prix = :prix, id_category = :categorie WHERE id= :id",[
                     "name" => $name,
                     "description" => $description,
-                    "price" => $price,
+                    "prix" => $prix,
                     "categorie" => $categorie,
                     "id" => $product['id']
             ]);
@@ -182,11 +188,8 @@
             exit();
         }     
 
-
-
     }else{
         // erreur dans le formulaire (hors fichier)
         header("Location: updateProduct.php?id=".$product['id']."&error=".$err);
         exit();
     }
-

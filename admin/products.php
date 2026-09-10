@@ -9,23 +9,36 @@
     require_once "../config/connexion.php";
     require "functions.php";
 
-    if(isset($_GET['delete']) && filter_var($_GET['delete'], FILTER_VALIDATE_INT)){
-        $delete = fetchOne($bdd, "SELECT * FROM products WHERE id=?", [$_GET['delete']]);
-        if(!$delete){
-            // Id inexistant en BDD -> on bloque avec une 404
-            header("Location: ../404.php");
-            exit();
-        } else {
-            // suppression du fichier image associé sur le serveur, si présent
-            if(file_exists("../images/".$delete['cover'])){
-                unlink("../images/".$delete['cover']);
+     if(isset($_GET['delete']) && filter_var($_GET['delete'],FILTER_VALIDATE_INT)){
+       $delete = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['delete']]);
+       if(!$delete){
+        header("Location: ../404.php");
+        exit();
+       }else{
+        if(file_exists("../images/".$delete['cover'])){
+            unlink("../images/".$delete['cover']);
+        }
+        if(file_exists("../images/mini_".$delete['cover'])){
+            unlink("../images/mini_".$delete['cover']);
+        }
+      
+       }
+
+       $deleteGal = fetchAll($bdd,"SELECT * FROM images WHERE id_product=?",[$_GET['delete']]);
+        foreach($deleteGal as $img){
+            if(file_exists("../images/".$img['file'])){
+                unlink("../images/".$img['file']);
             }
         }
+        
+       $galResult = execute($bdd,"DELETE FROM images WHERE id_product=?",[$_GET['delete']]);
 
-        // suppression en bdd
-        $result = execute($bdd, "DELETE FROM products WHERE id=?", [$_GET['delete']]);
-        //var_dump($result);
+       $result = execute($bdd,"DELETE FROM products WHERE id=?",[$_GET['delete']]);
+       //var_dump($result);
+       header("Location: products.php?successdelete=".$_GET['delete']);
+       exit();
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -35,55 +48,19 @@
     <?php include("partials/nav.php"); ?>
     <div class="container-fluid px-3 px-md-5 py-5 mx-auto" style="max-width: 1400px;">
         <h2>Gestion des produits</h2>
-        
         <?php
-            // --- récupération des catégories pour remplir le select ---
-            $categories = fetchAll($bdd, "SELECT * FROM categories ORDER BY name ASC");
-
-            // catégorie actuellement sélectionnée via le filtre GET (chaîne vide = pas de filtre)
-            $selectedCategory = $_GET['category'] ?? '';
-
-            // --- Récupération des produits, avec filtrage optionnel par catégorie ---
-            // On joint products et categories pour récupérer le nom de la catégorie associée
-            // (category_name) plutôt que son simple id.
-            // Le WHERE n'est ajouté à la requête que si une catégorie a été sélectionnée,
-            // afin d'éviter une clause inutile quand on veut afficher tous les produits.
-            $products = fetchAll(
-                $bdd,
-                "SELECT products.id, products.name, categories.name as category_name, products.price, products.cover 
-                FROM products 
-                INNER JOIN categories ON products.id_category = categories.id" . ($selectedCategory !== '' ? " WHERE products.id_category = ?" : "") . " ORDER BY products.id ASC",
-                
-                // Le tableau de paramètres est vide si aucun filtre n'est actif,
-                // sinon il contient l'id de la catégorie à filtrer (protège contre l'injection SQL)
-                $selectedCategory !== '' ? [$selectedCategory] : []
-            );
+            $products = fetchAll($bdd, "SELECT products.id as pid, products.name as pname, products.prix as pprix, products.cover as pcover, categories.name as cname FROM products INNER JOIN categories ON products.id_category = categories.id ORDER BY products.id DESC");
+            // var_dump($products)
         ?>
-        
+
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3">
 
-        <a href="addProduct.php" class="btn btn-outline-primary btn-sm my-3">Ajouter un produit</a>
-            
-            <!--  filtrage via select -->
-            <form method="GET" action="products.php" class="d-flex align-items-center gap-2">
-                <label for="category" class="mb-0 text-nowrap">Catégorie :</label>
-                <select name="category" id="category" class="form-select m-3" style="width: auto;" onchange="this.form.submit()">
-                    <option value="">Toutes les catégories</option>
+            <a href="addProduct.php" class="btn btn-outline-primary btn-sm my-3">Ajouter un produit</a>
 
-                    <?php foreach ($categories as $category) : ?>
-                        <!-- L'attribut "selected" est ajouté dynamiquement si cette catégorie
-                             correspond à celle actuellement filtrée, pour conserver le choix
-                             visuellement après rechargement de la page -->
-                        <option value="<?= htmlspecialchars($category['id']) ?>"<?= ($selectedCategory == $category['id']) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($category['name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </form>
-        </div>
-
-        <!-- tableau des produits -->
+        </div>  
+        
         <div class="table-responsive">
+            
             <table class="table table-hover table-striped align-middle text-center w-100 border">
                 <thead>
                     <tr>
@@ -96,75 +73,85 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($products as $product) : ?>
-                        <tr class="clickable-row" style="cursor: pointer;" data-href="product.php?id=<?= urlencode($product['id']) ?>">
-                            <th scope="row"><?= $product['id'] ?></th>
-
-                            <?php
-
-                                $coverPath = "../images/" . ($product['cover'] ?? '');
-
-                                $hasImage = !empty($product['cover']);
-                            ?>
+                    <?php foreach($products as $product) : ?>
+                        <tr class="clickable-row" style="cursor: pointer;" data-href="product.php?id=<?= urlencode($product['pid']) ?>">
+                            <th  scope="row"><?= $product['pid'] ?></th>
                             <td>
-                                <?php if ($hasImage) : ?>
+                                <!-- récupération image sinon card grise + icon bootstrap -->
+                                <?php 
+                                // Chemin physique absolu sur le serveur pour la vérification avec file_exists
+                                $imagePath = __DIR__ . '/../images/mini_' . $product['pcover'];
 
-                                    <img src="<?= htmlspecialchars($coverPath) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                                
+                                // Condition : pcover n'est pas vide ET le fichier existe réellement sur le serveur
+                                $hasValidImage = !empty($product['pcover']) && file_exists($imagePath);
+                                ?>
+
+                                <?php if ($hasValidImage) : ?>
+                                    <!-- CAS 1 : cover renseigné ET fichier image présent dans le dossier -->
+                                    <img src="../images/mini_<?= htmlspecialchars($product['pcover']) ?>" 
+                                        alt="<?= $product['pname'] ?>" 
+                                        title="<?= $product['pname'] ?>" 
+                                        class="rounded" 
+                                        style="width: 60px; height: 60px; object-fit: cover;">
+
                                 <?php else : ?>
-
-                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
+                                    <!-- CAS 2 : cover est NULL, vide OU le texte en BDD ne correspond à aucune image du dossier -->
+                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" 
+                                        style="width: 60px; height: 60px;" 
+                                        title="<?= $product['pname'] ?>">
                                         <i class="bi bi-image text-white"></i>
                                     </div>
-
                                 <?php endif; ?>
                             </td>
-                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($product['name']) ?></td>
-                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($product['category_name']) ?></td>
-                            <td class="d-none d-md-table-cell"><?= number_format($product['price'], 2, ',', ' ') ?>€</td>
-
+                            <td class="d-none d-md-table-cell"><?= $product['pname'] ?></td>
+                            <td class="d-none d-md-table-cell"><?= $product['cname'] ?></td>
+                            <td class="d-none d-md-table-cell"><?= number_format($product['pprix'], 2, ',', ' ') ?>€</td>
                             <!-- data-no-click annule click javascript sur 'Actions' -->
                             <td data-no-click>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="updateProduct.php?id=<?= urlencode($product['id']) ?>" class="btn btn-warning btn-sm">
+                                    <a href="updateProduct.php?id=<?= $product['pid'] ?>" class="btn btn-warning btn-sm">
                                         Modifier
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $product['id'] ?>">
-                                        Supprimer
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $product['pid'] ?>">
+                                    Supprimer
                                     </button>
                                 </div>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal<?= $product['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel<?= $product['id'] ?>" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-sm">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel<?= $product['id'] ?>">Confirmation de suppression</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Voulez-vous vraiment<br>supprimer le produit <strong><?= htmlspecialchars($product['name']) ?></strong> ?
-                                            </div>
-                                            <div class="modal-footer">
-
-                                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
-
-                                                <a href="products.php?delete=<?= urlencode($product['id']) ?>" class="btn btn-danger btn-sm">Supprimer</a>
-                                            </div>
+                            </td>
+    
+                            <!-- Button trigger modal -->
+    
+    
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal<?= $product['pid'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel<?= $product['pid'] ?>" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel<?= $product['pid'] ?>"><i class="bi bi-exclamation-octagon text-danger"></i> Confirmation de suppression</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="mb-2">Voulez vous supprimer le produit :</p>
+                                            <p class="fw-bold fs-5 mb-3 text-break"><?= $product['pname'] ?></p>
+                                            <p class="text-warning small mb-0">
+                                                <i class="bi bi-exclamation-triangle"></i> Toutes les images associées seront supprimés.
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                                            <a href="products.php?delete=<?= $product['pid'] ?>" class="btn btn-danger">Supprimer</a>
                                         </div>
                                     </div>
                                 </div>
-                            </td>
+                            </div>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
 
+        </div>
     </div>
 
 <script src="../assets/js/script.js"></script>
 
 </body>
 </html>
-

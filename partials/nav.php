@@ -10,25 +10,12 @@
           <a class="nav-link" aria-current="page" href="index.php?action=home">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php?action=product">Produits</a>
+          <a class="nav-link" href="#">Produits</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php?action=gallery">Galerie</a>
+          <a class="nav-link" href="#">Galerie</a>
         </li>
       </ul>
     </div>
-    <button id="theme-toggle" class="btn btn-outline-secondary btn-sm ms-auto" type="button">
-        <i class="bi bi-circle-half"></i>
-    </button>
   </div>
 </nav>
-
-<script>
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-        const html = document.documentElement;
-        const current = html.getAttribute('data-bs-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-bs-theme', next);
-        localStorage.setItem('theme', next);
-    });
-</script>

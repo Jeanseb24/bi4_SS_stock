@@ -16,56 +16,44 @@
     }
     /************************/
 
-
-    // gestion des erreurs (hors fichier)
-    // init de la var err à 0
-    $err = 0;
-
-    // nettoyage des données (hors fichier) 
-    $name = trim($_POST['name'] ?? "");
-    $description = trim($_POST['description'] ?? "");
-    $prix = trim($_POST['prix'] ?? "");
-    $categorie = trim($_POST['categorie'] ?? "");
-
-    // vérification des données en conformité avec ce que l'on veut récupérer
-    if (empty($name)){
-        $err = 1;
-    }elseif (empty($description)){
-        $err = 2;
-    }elseif (empty($prix)){
-        $err = 3;
-    }elseif(!filter_var($prix, FILTER_VALIDATE_FLOAT)){
-        $err = 4;
-    }elseif(!filter_var($categorie, FILTER_VALIDATE_INT)){
-        $err = 5;
+    // vérification de l'id du produit à modifier
+    if(!isset($_GET['id']) || !filter_var($_GET['id'],FILTER_VALIDATE_INT)){
+        header("Location: ../404.php");
+        exit();
     }
 
-    // vérification de la var err si 0 ok sinon redirection vers formulaire
-    if($err===0){
+    // vérification si le produit existe bien
+    require "../config/connexion.php";
+    require "functions.php";
+    $product = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['id']]);
+    if(!$product){
+        header("Location: ../404.php");
+        exit();
+    }
         
         // vérification si l'image est envoyée et dans une bonne condition
-        if(!isset($_FILES['cover']) || $_FILES['cover']['error'] !== UPLOAD_ERR_OK){
-            header("Location: addProduct.php?error=6");
+        if(!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK){
+            header("Location: addImg.php?id=".$_GET['id']."&error=1");
             exit();
         }
 
         // récup le fichier
-        $tmpPath = $_FILES['cover']['tmp_name'];
+        $tmpPath = $_FILES['image']['tmp_name'];
         $tailleMax = 2 * 1024 * 1024; 
      
         // vérification de taille
-        if($_FILES['cover']['size'] > $tailleMax)
+        if($_FILES['image']['size'] > $tailleMax)
         {
-            header("Location: addProduct.php?error=7");
+            header("Location: addImg.php?id=".$_GET['id']."&error=2");
             exit();
         }
 
         // vérification de l'extensions
-        $extension = strtolower(pathinfo($_FILES['cover']['name'], PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
         $extensionAutorisees = ['jpg','jpeg','png','svg',"webp"];
 
         if(!in_array($extension,$extensionAutorisees, true)){
-            header("Location: addProduct.php?error=8");
+             header("Location: addImg.php?id=".$_GET['id']."&error=3");
             exit();
         }
         /************************/ 
@@ -84,13 +72,13 @@
         ];
 
         if(!in_array($mimeReel, $mimesAutorises, true) || $mimesAutorises[$extension] !== $mimeReel){
-            header("Location: addProduct.php?error=9");
+            header("Location: addImg.php?id=".$_GET['id']."&error=4");
             exit();
         }
         /************************/ 
 
         // changement du nom du fichier (sanitize)
-        $nomImage =  basename($_FILES['cover']['name']);
+        $nomImage =  basename($_FILES['image']['name']);
         $nomImageLisible = strtr($nomImage, 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ','AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
         $nomImageSafe = preg_replace('/([^.a-z0-9]+)/i', '-', $nomImageLisible);
         $uniqnomSafe = uniqid().'-'.$nomImageSafe;
@@ -104,22 +92,29 @@
          // déplacement du fichier
         if(move_uploaded_file($tmpPath, $dossierDestination.$uniqnomSafe)){
             // insertion dans la base de données
-            require "../config/connexion.php";
-            require "functions.php";
             try{
-                insert($bdd, "INSERT INTO products(name,description,prix,id_category,cover) VALUES(:name,:description,:prix,:categorie,:cover)",[
-                    "name" => $name,
-                    "description" => $description,
-                    "prix" => $prix,
-                    "categorie" => $categorie,
-                    "cover" => $uniqnomSafe
+                insert($bdd, "INSERT INTO images(file,id_product) VALUES(:img,:id)",[
+                    "img" => $uniqnomSafe,
+                    "id" => $product['id']
                 ]);
+                /*
+                    $req = $bdd->prepare("INSERT INTO images(file,id_product) VALUES(?,?)");
+                    $req->execute([$uniqnomSafe,$_GET['id']]);
+
+                     $req = $bdd->prepare("INSERT INTO images(file,id_product) VALUES(:img,:myid)");
+                    $req->execute([
+                        "myid" => $_GET['id'],
+                        "img" => $uniqnomSafe
+                    ]);
+                */
+
+
                 // faille CSRF token
                 unset($_SESSION['csrf_token']);
                 //header("Location: products.php?add=success");
                 // test test
                 // test+test
-                header("Location: redim.php?image=".urlencode($uniqnomSafe)."&add=success");
+                header("Location: updateProduct.php?id=".$product['id']."&add=success");
                 exit();
             }catch(PDOException $e){
                 if(file_exists($dossierDestination.$uniqnomSafe)){
@@ -137,8 +132,4 @@
 
      
 
-    }else{
-        // erreur dans le formulaire (hors fichier)
-        header("Location: addProduct.php?error=".$err);
-        exit();
-    }
+   
