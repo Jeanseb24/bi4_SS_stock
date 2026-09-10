@@ -140,30 +140,29 @@
             </div>
     
             <!-- Modal de confirmation avant suppression -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="exampleModal<?= $product['pid'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel<?= $product['pid'] ?>" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-exclamation-octagon text-danger"></i> Confirmation de suppression</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel<?= $product['pid'] ?>">
+                                <i class="bi bi-exclamation-octagon text-danger"></i> Confirmation de suppression
+                            </h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p class="mb-2">Voulez vous supprimer le produit :</p>
-                            <p class="fw-bold fs-5 mb-3 text-break"><?= $product['pname'] ?></p>
+                            <p class="mb-2">Voulez-vous supprimer le produit :</p>
+                            <p class="fw-bold fs-5 mb-3 text-break"><?= htmlspecialchars($product['pname']) ?></p>
                             <p class="text-warning small mb-0">
-                                <i class="bi bi-exclamation-triangle"></i> Toutes les images associées seront supprimés.
+                                <i class="bi bi-exclamation-triangle"></i> Toutes les images associées seront supprimées.
                             </p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
-                            <a href="products.php?delete=<?= $product['pid'] ?>" class="btn btn-danger btn-sm">Supprimer</a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                            <a href="products.php?delete=<?= $product['pid'] ?>" class="btn btn-danger">Supprimer</a>
                         </div>
                     </div>
                 </div>
             </div>
-        
-
-
     </div>
 </body>
 </html>
