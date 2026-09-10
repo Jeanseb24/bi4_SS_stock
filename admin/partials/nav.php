@@ -30,7 +30,6 @@
         <a href="dashboard.php?deco=1" title="Accès rapide Admin" class="text-decoration-none">
             <div class="text-center">
                 <i class="bi bi-key-fill fs-4 text-warning"></i>
-                <span class="d-block small text-danger fw-bold">Déconnexion</span>
             </div>
         </a>
       </ul>

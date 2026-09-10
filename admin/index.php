@@ -20,13 +20,13 @@
 
             // vérification des données
             if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $erreurEmail = "<div class='alert alert-danger'>Veuillez remplir correctement l'adresse e-mail</div>";
+                $erreurEmail = "<div class='text-danger small my-1'>Veuillez remplir correctement l'adresse e-mail</div>";
             }else{
                 $_SESSION['form-email'] = $email;
             }
 
             if(empty($password)){
-                $erreurPassword = "<div class='alert alert-danger'>Veuillez remplir le password</div>";
+                $erreurPassword = "<div class='text-danger small my-1'>Veuillez remplir le password</div>";
             }
 
             if(empty($erreurEmail) && empty($erreurPassword))
@@ -48,45 +48,68 @@
                         unset($_SESSION['form-email']);
                         exit();
                     }else{
-                        $erreurForm="<div class='alert alert-danger'>Votre login ou votre mot de passe est incorrect</div>";
+                        $erreurForm="<div class='text-danger small my-1'>Votre login ou votre mot de passe est incorrect</div>";
                     }
                 }else{
-                    $erreurForm="<div class='alert alert-danger'>Votre login ou votre mot de passe est incorrect</div>";
+                    $erreurForm="<div class='text-danger small my-1'>Votre login ou votre mot de passe est incorrect</div>";
                 }
             }
          }
     }
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-bs-theme="dark">
 <?php include("partials/head.php"); ?>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 offset-md-4">
-                <h1>Connexion - Administration</h1>
-                <form action="index.php" method="POST">
-                    <?=  $erreurForm ?>
-                    <?php 
-                        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-                    ?>
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <div class="form-group my-3">
-                        <label for="email">Login (adresse E-mail): </label>
-                        <input type="email" name="email" id="email" class="form-control" value="<?= $_SESSION['form-email'] ?>">
-                        <?= $erreurEmail ?>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100">
+        <div class="col-md-6 col-lg-4 mx-auto">
+            
+            <!-- Début de la Carte -->
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-body p-4">
+                    
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold h4 text-dark mb-1">Connexion</h2>
+                        <p class="text-muted small">Espace Administration</p>
                     </div>
-                    <div class="form-group my-3">
-                        <label for="password">Mot de passe: </label>
-                        <input type="password" name="password" id="password" class="form-control">
-                        <?= $erreurPassword ?>
-                    </div>
-                    <div class="form-group my-3">
-                        <input type="submit" value="Connexion" class="btn btn-success">
-                    </div>
-                </form>
+
+                    <form action="index.php" method="POST">
+                        <?php $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse Email :</label>
+                            <div class="input-group">
+                                <span class="input-group-text text-muted">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="nom@exemple.com" value="<?= htmlspecialchars($_SESSION['form-email'] ?? '') ?>">
+                            </div>
+                            <?= $erreurEmail ?>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe :</label>
+                            <div class="input-group">
+                                <span class="input-group-text text-muted">
+                                    <i class="bi bi-key"></i>
+                                </span>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Entrez votre mot de passe">
+                            </div>
+                            <?= $erreurPassword ?>
+                        </div>
+
+                        <?= $erreurForm ?>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <input type="submit" value="Connexion" class="btn btn-success">
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 </html>

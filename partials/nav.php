@@ -17,5 +17,11 @@
         </li>
       </ul>
     </div>
+    <!-- Bouton temporaire Dev à supprimer -->
+    <div>
+      <a href="admin/index.php" title="Accès rapide Administration">
+        <i class="bi bi-key-fill fs-4"></i>
+      </a>
+    </div>
   </div>
 </nav>
